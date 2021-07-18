@@ -118,3 +118,49 @@ function verifyPassword(funnyCharacters, passWord, passWordlength, allowLowerCas
   }
   return requirementSatisfied;
 }
+function buildPassword( passWordLength,allowLowerCase, allowUpperCase, allowNumbers, allowSpecials){
+  var lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+  var upperCaseletters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var numberCharacters = "1234567890";
+  var funnyCharacters = "!@#$%^&*()_+=-/.,<>?;':";
+  var characterSet1 = "";
+  if( allowLowerCase ) {
+    characterSet1 += lowerCaseLetters;
+  }
+  if ( allowUpperCase ) {
+    characterSet1 += upperCaseletters;
+  }
+  if ( allowNumbers ){
+    characterSet1 += numberCharacters;
+  }
+    if ( allowSpecials ){
+      characterrSet1 += funnyCharacters;
+    }
+    var characterSet2 = shuffle( characterSet1 );
+    var characterSet3 = shuffle( characterSet2 );
+    var requirementSatisfied = false;
+    while ( !requirementSatisfied ) {
+      var passWord = formPassWord( characterSet2, characterSet3, passWordLength);
+      requirementSatisfied = verifyPassword (funnyCharacters, passWord, passWordLength, allowLowerCase,allowUpperCase,allowNumbers, allowSpecials);
+    
+    }
+    console.log("the generated password is:", passWord );
+    return passWord;
+}
+function generatePassword(){
+  var createdPassWord = "";
+  var passWordLength = getPassWordLength();
+  var allowSpecials = getSpecials();
+  var allowLowerCase = getLowerCase();
+  var allowUpperCase = getUpperCase();
+  var allowNumbers = getNumbers();
+  var somethingSelected = allowLowerCase | allowNumbers | allowSpecials | allowUpperCase;
+  if( !somethingSelected ) {
+    window.alert("Error, you must select at least one character set, please try again.");
+    createdPassWord = generatedPassword();
+  }
+  if (createdPassWord == 0){
+    createdPassWord = buildPassword(passWordLength, allowUpperCase, allowSpecials,allowNumbers,allowLowerCase);
+  }
+  return createdPassWord;
+}
